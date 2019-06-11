@@ -46,12 +46,14 @@ h_scatterplot_ui <- function(id) {
         textInput(
           inputId = ns("states_names1"),
           label = "State 0:",
-          placeholder = "Character state 0"
+          placeholder = "Character state 0",
+          value = 0
         ),
         textInput(
           inputId = ns("states_names2"),
           label = "State 1:",
-          placeholder = "Character state 1"
+          placeholder = "Character state 1",
+          value = 1
         ),
         # plot_as_waiting_time
         checkboxInput(

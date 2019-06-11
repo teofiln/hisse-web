@@ -4,12 +4,8 @@ library(shinyWidgets)
 library(hisse)
 library(utilhisse)
 library(viridis)
-source("module_h_scatterplot.R")
-source("module_h_dotplot.R")
-source("module_h_ridgelines.R")
-source("module_h_trait_recon.R")
-source("module_h_rate_recon.R")
-data("diatoms")
+mods <- list.files(path = "modules/", pattern = "*.R", full.names = TRUE)
+lapply(mods, source)
 
 ui <-
   navbarPage(
