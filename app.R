@@ -26,7 +26,8 @@ ui <-
           'Choose a HiSSE marginal ancestral reconstruction file:',
           accept = c('.Rsave', "RSave", '.Rdata', 'RData')
         ),
-        helpText('This should be an object output from `hisse::MarginRecon` or a list of such objects where each element contains the AIC score of the model. Make sure the object was saved to a file with the extension "Rsave" or "Rdata".')
+        helpText('This should be an object output from `hisse::MarginRecon` or a list of such objects where each element contains the AIC score of the model. Make sure the object was saved to a file with the extension "Rsave" or "Rdata".'),
+        checkboxInput("demo", label = "Use demo file", value = FALSE)
       )
       ),
       column(9,
@@ -51,26 +52,35 @@ ui <-
   )
 
 server <- function(input, output) {
-  h_input_name <- reactive({
-    validate(
-      need(
-        input$h_recon_input != "" ,
-        "Please select a HiSSE ancestral reconstruction file"
-      )
-    )
-    in_file <- input$h_recon_input
-    return(in_file)
-  })
   
   h_recon_load <- reactive({
-    H <- get(load(h_input_name()$datapath))
-    validate(
-      need(
-        class(H) == "hisse.states" || class(H[[1]]) == "hisse.states",
-        "Looks like this is not a HiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'hisse.states')"
-      )
-    )
-    return(H)
+    if (input$demo) {
+      data("diatoms")
+      H <- diatoms$cid4_recon
+      return(H) 
+    } else {
+      # h_input_name <- reactive({
+        validate(
+          need(
+            input$h_recon_input != "" ,
+            "Please select a HiSSE ancestral reconstruction file"
+          )
+        )
+        in_file <- input$h_recon_input
+        # return(in_file)
+      # })
+      
+      # h_recon_load <- reactive({
+        H <- get(load(in_file$datapath))
+        validate(
+          need(
+            class(H) == "hisse.states" || class(H[[1]]) == "hisse.states",
+            "Looks like this is not a HiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'hisse.states')"
+          )
+        )
+        return(H)
+      # })
+    }
   })
   
   callModule(module = h_scatterplot_srv,
