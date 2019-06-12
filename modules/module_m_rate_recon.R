@@ -6,13 +6,13 @@ params <- c(
   "Net diversification"
 )
 
-##### --- h_rate_recon ui  ---------------------- #####
+##### --- m_rate_recon ui  ---------------------- #####
 
-h_rate_recon_ui <- function(id) {
+m_rate_recon_ui <- function(id) {
   ns <- NS(id)
   tagList(
     checkboxGroupButtons(
-      inputId = ns("h_rate"),
+      inputId = ns("m_rate"),
       choiceNames = "Tree plot with ancestral reconstruction for diversification rates",
       choiceValues = 1,
       status = "primary",
@@ -20,7 +20,7 @@ h_rate_recon_ui <- function(id) {
     ),
     
     conditionalPanel(
-      condition = paste0("input['", ns("h_rate"), "'] == 1"),
+      condition = paste0("input['", ns("m_rate"), "'] == 1"),
       wellPanel(fluidRow(
         column(
           width = 3,
@@ -51,7 +51,7 @@ h_rate_recon_ui <- function(id) {
           ),
           numericInput(
             inputId = ns("time_axis_ticks"),
-            label = "Number of ticks for the time axis",
+            label = "Number of ticks for the time axis:",
             min = 0,
             max = 20,
             value = 10,
@@ -59,7 +59,7 @@ h_rate_recon_ui <- function(id) {
           ),
           numericInput(
             inputId = ns("open_angle"),
-            label = "Space in degrees between the first and last tip (when tree layout is 'fan')",
+            label = "Space in degrees between the first and last tip (when tree layout is 'fan'):",
             min = 0,
             max = 360,
             value = 10,
@@ -77,21 +77,21 @@ h_rate_recon_ui <- function(id) {
             helpText("Set a sequence of break points:"),
             numericInput(
               inputId = ns("begin"),
-              label = "Min",
+              label = "Min:",
               min = 0,
               value = 0,
               step = 0.1
             ),
             numericInput(
               inputId = ns("end"),
-              label = "Max",
+              label = "Max:",
               min = 0,
               value = 2,
               step = 0.1
             ),
             numericInput(
               inputId = ns("step"),
-              label = "Step",
+              label = "Step:",
               min = 0.01,
               value = 0.3,
               step = 0.1
@@ -106,15 +106,15 @@ h_rate_recon_ui <- function(id) {
       )))
 }
 
-##### --- h_rate_recon srv ---------------------- #####
+##### --- m_rate_recon srv ---------------------- #####
 
-h_rate_recon_srv <-
+m_rate_recon_srv <-
   function(input,
            output,
            session,
            h_obj) {
     h_proc <- reactive({
-      x <- h_process_recon(h_obj ())
+      x <- n_process_recon(h_obj ())
       return(x)
     })
     
@@ -130,8 +130,8 @@ h_rate_recon_srv <-
     })
     
     plt <- eventReactive(input$plot, {
-      p <- h_rate_recon(
-        processed_hisse_recon = h_proc(),
+      p <- m_rate_recon(
+        processed_muhisse_recon = h_proc(),
         parameter = param(),
         show_tip_labels = input$show_tip_labels,
         discrete = input$discrete,

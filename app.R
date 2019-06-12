@@ -4,7 +4,11 @@ library(shinyWidgets)
 library(hisse)
 library(utilhisse)
 library(viridis)
-mods <- list.files(path = "modules/", pattern = "*.R", full.names = TRUE)
+library(colorplaner)
+mods <-
+  list.files(path = "modules/",
+             pattern = "*.R",
+             full.names = TRUE)
 lapply(mods, source)
 
 ui <-
@@ -18,68 +22,84 @@ ui <-
     tabPanel(
       "BINARY",
       # file load
-      column(3, 
-      wellPanel(
-        fileInput(
-          width = "100%",
-          'h_recon_input',
-          'Choose a HiSSE marginal ancestral reconstruction file:',
-          accept = c('.Rsave', "RSave", '.Rdata', 'RData')
-        ),
-        helpText('This should be an object output from `hisse::MarginRecon` or a list of such objects where each element contains the AIC score of the model. Make sure the object was saved to a file with the extension "Rsave" or "Rdata".'),
-        checkboxInput("demo", label = "Use demo file", value = FALSE)
-      )
-      ),
-      column(9,
-      h_scatterplot_ui(id = "1"),
-      h_dotplot_ui(id = "2"),
-      h_ridgelines_ui(id = "3"),
-      h_trait_recon_ui(id = "4"),
-      h_rate_recon_ui(id = "5")
+      column(3,
+             wellPanel(
+               fileInput(
+                 width = "100%",
+                 'h_recon_input',
+                 'Choose a HiSSE marginal ancestral reconstruction file:',
+                 accept = c('.Rsave', "RSave", '.Rdata', 'RData')
+               ),
+               helpText(
+                 'This should be an object output from `hisse::MarginRecon` or a list of such objects where each element contains the AIC score of the model. Make sure the object was saved to a file with the extension "Rsave" or "Rdata".'
+               ),
+               checkboxInput("h_demo", label = "Use demo file", value = FALSE)
+             )),
+      column(
+        9,
+        h_scatterplot_ui(id = "1"),
+        h_dotplot_ui(id = "2"),
+        h_ridgelines_ui(id = "3"),
+        h_trait_recon_ui(id = "4"),
+        h_rate_recon_ui(id = "5")
       )
       
     ),
-    tabPanel("MULTISTATE")#,
+    tabPanel(
+      "MULTISTATE",
+      # file load
+      column(3,
+             wellPanel(
+               fileInput(
+                 width = "100%",
+                 'm_recon_input',
+                 'Choose a MuHiSSE marginal ancestral reconstruction file:',
+                 accept = c('.Rsave', "RSave", '.Rdata', 'RData')
+               ),
+               helpText(
+                 'This should be an object output from `hisse::MarginReconMuHiSSE` or a list of such objects where each element contains the AIC score of the model. Make sure the object was saved to a file with the extension "Rsave" or "Rdata".'
+               ),
+               checkboxInput("m_demo", label = "Use demo file", value = FALSE)
+             )),
+      column(
+        9,
+        m_scatterplot_ui(id = "11"),
+        m_dotplot_ui(id = "12"),
+        m_ridgelines_ui(id = "13"),
+        m_scatterplot_cp_ui(id = "14"),
+        m_trait_recon_ui(id = "15"),
+        m_trait_recon_cp_ui(id = "16"),
+        m_rate_recon_ui(id = "17")
+      )
+    )#,
     # tabPanel("GEOGRAPHIC")
-    # sidebar to load file
     
-    # tabsets for different visualizations
-    # tab 1 scatter
-    # tab 2 trait recon
-    # tab 3 rate recon
-    # each tab has a download widget
-    # tabs have their own additional inputs (colors, parameters, ... )
   )
 
 server <- function(input, output) {
-  
+  ##### ---- server logic for binary ----------------------- #####
   h_recon_load <- reactive({
-    if (input$demo) {
+    if (input$h_demo) {
       data("diatoms")
       H <- diatoms$cid4_recon
-      return(H) 
+      return(H)
     } else {
-      # h_input_name <- reactive({
-        validate(
-          need(
-            input$h_recon_input != "" ,
-            "Please select a HiSSE ancestral reconstruction file"
-          )
+      validate(
+        need(
+          input$h_recon_input != "" ,
+          "Please select a MuHiSSE ancestral reconstruction file"
         )
-        in_file <- input$h_recon_input
-        # return(in_file)
-      # })
+      )
+      in_file <- input$h_recon_input
       
-      # h_recon_load <- reactive({
-        H <- get(load(in_file$datapath))
-        validate(
-          need(
-            class(H) == "hisse.states" || class(H[[1]]) == "hisse.states",
-            "Looks like this is not a HiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'hisse.states')"
-          )
+      H <- get(load(in_file$datapath))
+      validate(
+        need(
+          class(H) == "muhisse.states" || class(H[[1]]) == "muhisse.states",
+          "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
         )
-        return(H)
-      # })
+      )
+      return(H)
     }
   })
   
@@ -102,6 +122,60 @@ server <- function(input, output) {
   callModule(module = h_rate_recon_srv,
              id = "5",
              h_obj = h_recon_load)
+  
+  
+  ##### ---- server logic for multistate ----------------------- #####
+  m_recon_load <- reactive({
+    if (input$m_demo) {
+      data("diatoms")
+      H <- diatoms$muhisse_recon
+      return(H)
+    } else {
+      validate(
+        need(
+          input$m_recon_input != "" ,
+          "Please select a MuHiSSE ancestral reconstruction file"
+        )
+      )
+      in_file <- input$m_recon_input
+      H <- get(load(in_file$datapath))
+      validate(
+        need(
+          class(H) == "muhisse.states" || class(H[[1]]) == "muhisse.states",
+          "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
+        )
+      )
+      return(H)
+    }
+  })
+  
+  callModule(module = m_scatterplot_srv,
+             id = "11",
+             h_obj = m_recon_load)
+  
+  callModule(module = m_dotplot_srv,
+             id = "12",
+             h_obj = m_recon_load)
+  
+  callModule(module = m_ridgelines_srv,
+             id = "13",
+             h_obj = m_recon_load)
+  
+  callModule(module = m_scatterplot_cp_srv,
+             id = "14",
+             h_obj = m_recon_load)
+  
+  callModule(module = m_trait_recon_srv,
+             id = "15",
+             h_obj = m_recon_load)
+  
+  callModule(module = m_trait_recon_cp_srv,
+             id = "16",
+             h_obj = m_recon_load)
+
+  callModule(module = m_rate_recon_srv,
+             id = "17",
+             h_obj = m_recon_load)
 }
 
 # Run the application

@@ -24,25 +24,25 @@ h_trait_recon_ui <- function(id) {
         ),
         selectInput(
           inputId = ns("tree_layout"),
-          label = "Tree layout",
+          label = "Tree layout:",
           choices = c('rectangular', 'slanted', 'circular', 'fan', 'radial'),
           selected = "slanted"
         ),
         selectInput(
           inputId = ns("tree_direction"),
-          label = "Tree direction",
+          label = "Tree direction:",
           choices = c('right', 'left', 'up', 'down'),
           selected = "right"
         ),
         # show tip labels
         checkboxInput(
-          inputId = ns("show_tip_labels"),
+          inputId = ns("show_tip_labels (illegible for large trees)"),
           label = "Show tip labels",
           value = FALSE
         ),
         numericInput(
           inputId = ns("time_axis_ticks"),
-          label = "Number of ticks for the time axis",
+          label = "Number of ticks for the time axis:",
           min = 0,
           max = 20,
           value = 10,
@@ -50,7 +50,7 @@ h_trait_recon_ui <- function(id) {
         ),
         numericInput(
           inputId = ns("open_angle"),
-          label = "Space in degrees between the first and last tip (when tree layout is 'fan')",
+          label = "Space in degrees between the first and last tip (when tree layout is 'fan'):",
           min = 0,
           max = 360,
           value = 10,
