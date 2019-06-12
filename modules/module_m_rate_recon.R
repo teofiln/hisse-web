@@ -114,7 +114,7 @@ m_rate_recon_srv <-
            session,
            h_obj) {
     h_proc <- reactive({
-      x <- n_process_recon(h_obj ())
+      x <- m_process_recon(h_obj ())
       return(x)
     })
     

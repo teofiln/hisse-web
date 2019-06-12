@@ -76,8 +76,8 @@ m_trait_recon_ui <- function(id) {
           ),
           # show tip labels
           checkboxInput(
-            inputId = ns("show_tip_labels (illegible for large trees)"),
-            label = "Show tip labels",
+            inputId = ns("show_tip_labels"),
+            label = "Show tip labels (illegible for large trees)",
             value = FALSE
           ),
           numericInput(

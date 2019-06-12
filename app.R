@@ -87,7 +87,7 @@ server <- function(input, output) {
       validate(
         need(
           input$h_recon_input != "" ,
-          "Please select a MuHiSSE ancestral reconstruction file"
+          "Please select a HiSSE ancestral reconstruction file"
         )
       )
       in_file <- input$h_recon_input
@@ -95,7 +95,7 @@ server <- function(input, output) {
       H <- get(load(in_file$datapath))
       validate(
         need(
-          class(H) == "muhisse.states" || class(H[[1]]) == "muhisse.states",
+          class(H) == "hisse.states" || class(H[[1]]) == "hisse.states",
           "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
         )
       )
