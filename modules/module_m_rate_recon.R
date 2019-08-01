@@ -131,7 +131,7 @@ m_rate_recon_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- m_rate_recon(
-        processed_muhisse_recon = h_proc(),
+        processed_recon = h_proc(),
         parameter = param(),
         show_tip_labels = input$show_tip_labels,
         discrete = input$discrete,
@@ -140,7 +140,7 @@ m_rate_recon_srv <-
         tree_direction = input$tree_direction,
         time_axis_ticks = input$time_axis_ticks,
         open_angle = input$open_angle
-      ) + theme(plot.background = element_rect(color = "black", size = 1))
+      ) + theme(plot.background = element_rect(color="black", size = 1))
       return(p)
     })
     

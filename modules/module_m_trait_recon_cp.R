@@ -92,7 +92,7 @@ m_trait_recon_cp_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- m_trait_recon_cp(
-        processed_muhisse_recon = h_proc(),
+        processed_recon = h_proc(),
         focal_character = input$focal_char, 
         focal_character_label = input$fc_label,
         second_character_label = input$sc_label,
@@ -102,7 +102,7 @@ m_trait_recon_cp_srv <-
         time_axis_ticks = input$time_axis_ticks,
         open_angle = input$open_angle,
         colors= c("#21908CFF", "#440154FF", "#FDE725FF")
-      ) + theme(plot.background = element_rect(color = "black", size = 1))
+      ) + theme(plot.background = element_rect(color="black", size = 1))
       return(p)
     })
     

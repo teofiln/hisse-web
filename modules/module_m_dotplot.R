@@ -36,13 +36,6 @@ m_dotplot_ui <- function(id) {
             choices = params,
             selected = "Net turnover"
           ),
-          # # x_label
-          # textInput(
-          #   inputId = ns("x_label"),
-          #   label = "X axis label:",
-          #   placeholder = "The binary trait in your model"
-          # ),
-          # states_names
           textInput(
             inputId = ns("states_names1"),
             label = "State 00:",
@@ -114,9 +107,8 @@ m_dotplot_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- m_dotplot(
-        processed_muhisse_recon = h_proc(),
+        processed_recon = h_proc(),
         parameter = param(),
-        # x_label = input$x_label,
         states_names = c(input$states_names1, input$states_names2, input$states_names3, input$states_names4),
         plot_as_waiting_time = input$plot_as_waiting_time,
         bin_width = input$bin_width,

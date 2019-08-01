@@ -36,13 +36,6 @@ h_ridgelines_ui <- function(id) {
             choices = params,
             selected = "Net turnover"
           ),
-          # # x_label
-          # textInput(
-          #   inputId = ns("x_label"),
-          #   label = "X axis label:",
-          #   placeholder = "The binary trait in your model"
-          # ),
-          # states_names
           textInput(
             inputId = ns("states_names1"),
             label = "State 0:",
@@ -95,12 +88,12 @@ h_ridgelines_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- h_ridgelines(
-        processed_hisse_recon = h_proc(),
+        processed_recon = h_proc(),
         parameter = param(),
-        # x_label = input$x_label,
         states_names = c(input$states_names1, input$states_names2),
         plot_as_waiting_time = input$plot_as_waiting_time,
-        colors= viridis(end = 0.6, n=2)
+        line_colors = viridis(end = 0.6, n=2),
+        fill_colors = viridis(end = 0.6, n=2, alpha=0.7)
       ) +
         theme_h_ridge
       return(p)

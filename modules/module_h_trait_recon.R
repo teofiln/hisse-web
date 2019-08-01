@@ -19,7 +19,7 @@ h_trait_recon_ui <- function(id) {
         # x_label
         textInput(
           inputId = ns("x_label"),
-          label = "X axis label:",
+          label = "Trait name:",
           placeholder = "The binary trait in your model"
         ),
         selectInput(
@@ -97,8 +97,8 @@ h_trait_recon_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- h_trait_recon(
-        processed_hisse_recon = h_proc(),
-        x_label = input$x_label,
+        processed_recon = h_proc(),
+        trait_name = input$x_label,
         show_tip_labels = input$show_tip_labels,
         discrete = input$discrete,
         cutoff = input$cutoff,
@@ -106,7 +106,7 @@ h_trait_recon_srv <-
         tree_direction = input$tree_direction,
         time_axis_ticks = input$time_axis_ticks,
         open_angle = input$open_angle
-      ) + theme(plot.background = element_rect(color = "black", size = 1))
+      ) + theme(plot.background = element_rect(color="black", size = 1))
       return(p)
     })
     

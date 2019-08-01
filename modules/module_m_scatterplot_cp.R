@@ -94,7 +94,7 @@ m_scatterplot_cp_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- m_scatterplot_cp(
-        processed_muhisse_recon = h_proc(),
+        processed_recon = h_proc(),
         parameter = param(),
         focal_character = input$focal_char,
         focal_character_label = input$fc_label,

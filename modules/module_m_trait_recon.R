@@ -119,7 +119,7 @@ m_trait_recon_srv <-
     
     plt <- eventReactive(input$plot, {
       p <- m_trait_recon(
-        processed_muhisse_recon = h_proc(),
+        processed_recon = h_proc(),
         states_of_first_character = c(input$fc_states1, input$fc_states2),
         states_of_second_character = c(input$sc_states1, input$sc_states2),
         show_tip_labels = input$show_tip_labels,
@@ -129,7 +129,7 @@ m_trait_recon_srv <-
         time_axis_ticks = input$time_axis_ticks,
         open_angle = input$open_angle,
         colors= cols
-      ) + theme(plot.background = element_rect(color = "black", size = 1))
+      ) + theme(plot.background = element_rect(color="black", size = 1))
       return(p)
     })
     

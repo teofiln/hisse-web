@@ -5,6 +5,8 @@ library(hisse)
 library(utilhisse)
 library(viridis)
 library(colorplaner)
+
+# modules
 mods <-
   list.files(path = "modules/",
              pattern = "*.R",
