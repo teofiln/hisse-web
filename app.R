@@ -7,8 +7,14 @@ library(viridis)
 library(colorplaner)
 
 refs_text <- tags$div(
-  tags$p("This web application is based on the following papers and R packages:"),
-  tags$p("Papers:"),
+  tags$h3("About"),
+  tags$p("This web application is envisioned as a companion to the", tags$code("HiSSE"), "R package for Hidden Markov Model variants of State Speciation and Extinction models. The goal is to make it easier to quickly visualize the HiSSE results and produce nice looking plots that with some customization can be used for reports or presentations. These functions do not replace HiSSE's plotting functions, rather provide alternative ways of looking at the data. All of the plotting functions used here are available from the package ", tags$a(href="https://github.com/teofiln/utilhisse", 'utilhisse'), " and can be used indepent of this app."), 
+tags$p("The workflow starts with fitting models in R using the HiSSE functions `hisse` or `MuHiSSE` (GeoHiSSE models are not yet supported here) followed by reconstructing marginal ancestral states for traits and rates using the HiSSE functions `MarginRecon` and `MarginReconMuHiSSE`. The ancestral states objects (of class `hisse.states` or `muhisse.states`) can then be saved to an external file with R's `save` function. These saved reconstruction objects are then loaded into this app to visualize the results."),
+tags$p("This app was written by ", tags$a(href="https://teofil.discindo.org", "Teofil Nakov"), ". The R Shiny code for the app is available on ", tags$a(href="https://github.com/teofiln/hisse-web", "GitHub"), "."),
+  
+  tags$h3("References"),
+  tags$p("This web application is based on the following papers and R packages."),
+  tags$h4("Papers:"),
   tags$p(
       "Beaulieu, J. M., & O’Meara, B. C. (2016). Detecting hidden diversification shifts in models of trait-dependent speciation and extinction. Systematic biology, 65(4), 583-601.", tags$a(href="https://academic.oup.com/sysbio/article/65/4/583/1753616", "link")
     ),
@@ -18,7 +24,7 @@ refs_text <- tags$div(
   tags$p(
       "Nakov, T., Beaulieu, J. M., & Alverson, A. J. (2019). Diatoms diversify and turn over faster in freshwater than marine environments. bioRxiv, 406165.", tags$a(href="https://doi.org/10.1101/406165", "link")
     ),
-  tags$p("R packages:"),
+  tags$h4("R packages:"),
   tags$p("Beaulieu, J., O'Meara, B., & Caetano, D. (2019). Package ‘hisse’", tags$a(href="https://cran.r-project.org/web/packages/hisse/index.html", 'CRAN')),
   tags$p("Nakov, T. (2019). Package ’utilhisse’", tags$a(href="https://github.com/teofiln/utilhisse", 'Guthub'))
   )
@@ -54,17 +60,7 @@ ui <-
                ),
                checkboxInput("h_demo", label = "Use demo file", value = FALSE),
                conditionalPanel(condition = "input.h_demo", 
-                                HTML("This is a model fit for a CID4 model for plankton-benthos trait in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>.")),
-               tags$hr(),
-               checkboxGroupButtons(
-                 inputId = "references",
-                 choiceNames = "References",
-                 choiceValues = 1,
-                 status = "success",
-                 selected = "References"
-               ),
-               conditionalPanel(condition = "input.references == 1",
-                                wellPanel(refs_text))
+                                HTML("This is a model fit for a CID4 model for plankton-benthos trait in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
              )),
       column(
         9,
@@ -92,17 +88,7 @@ ui <-
                ),
                checkboxInput("m_demo", label = "Use demo file", value = FALSE),
                conditionalPanel(condition = "input.m_demo", 
-                                HTML("This is a model fit for a MuHiSSE model for marine-freshwater + plankton-benthos interaction in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>.")),
-      tags$hr(),
-      checkboxGroupButtons(
-        inputId = "references2",
-        choiceNames = "References",
-        choiceValues = 1,
-        status = "success",
-        selected = "References"
-      ),
-      conditionalPanel(condition = "input.references2 == 1",
-                       wellPanel(refs_text))
+                                HTML("This is a model fit for a MuHiSSE model for marine-freshwater + plankton-benthos interaction in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
     )),
       column(
         9,
@@ -114,9 +100,11 @@ ui <-
         m_trait_recon_cp_ui(id = "16"),
         m_rate_recon_ui(id = "17")
       )
-    )#,
+    ),
     # tabPanel("GEOGRAPHIC")
-    
+    tabPanel("ABOUT",
+             column(width = 6,
+                    wellPanel(refs_text)))
   )
 
 server <- function(input, output) {
