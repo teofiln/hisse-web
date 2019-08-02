@@ -62,7 +62,8 @@ h_dotplot_ui <- function(id) {
             label = "Plot as waiting time",
             value = FALSE
           ),
-          actionButton(inputId = ns("plot"), label = "Plot")
+          actionButton(inputId = ns("plot"), label = "Plot"),
+          actionButton(inputId = ns("code"), label = "Code")
         ),
         column(width = 9, 
                plotOutput(ns("plt")),
@@ -113,35 +114,35 @@ h_dotplot_srv <-
       plt()
     })
     
-    plt_txt <- eventReactive(input$plot, {
+    plt_txt <- eventReactive(input$code, {
+      
+      code_text <- paste(
+        "<b>Code to reproduce this figure in an R session: </b><br/>",
+        "<br/>",
+        "library(hisse)",
+        "<br/>library(utilhisse) # will load other dependencies",
+        "<br/>h_proc <- h_process_recon(your_hisse_recon_object)",
+        "<br/>h_dotplot(",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;parameter = '",param(), "',",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = c(",
+        input$states_names1, ",", input$states_names2, ")", ",",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ",
+        input$plot_as_waiting_time, ",",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;bin_width = ",
+        input$bin_width, ",", 
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors= c(#440154FF, #22A884FF)",
+        "<br/>) + theme_classic()",
+        "<br/>",
+        "<br/># For more information see ?utilhisse::h_dotplot",
+        sep=""
+      )
+      
       p <-
           wellPanel(class = "code_well",
           tags$style(".code_well {background-color: white ;}"),
-          HTML(
-            "<b>Code to reproduce this figure in an R session: </b><br/>",
-            "<br/>",
-            "library(hisse)",
-            "<br/>library(utilhisse) # will load other dependencies",
-            "<br/>h_proc <- h_process_recon(your_hisse_recon_object)",
-            "<br/>h_dotplot(",
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;parameter = ",
-            param(), ",",
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = ",
-            c(input$states_names1, input$states_names2), ",",
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ",
-            input$plot_as_waiting_time, ",",
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;bin_width = ",
-            input$bin_width, ",", 
-            "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors= ",
-            viridis(end = 0.6, n = 2),
-            "<br/>)",
-            "<br/>",
-            "<br/># For more information see ?utilhisse::h_dotplot",
-            sep = ""
-          )
+          HTML(code_text)
         )
-      
       return(p)
     })
     
