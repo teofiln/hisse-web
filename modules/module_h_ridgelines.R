@@ -95,8 +95,8 @@ h_ridgelines_srv <-
         parameter = param(),
         states_names = c(input$states_names1, input$states_names2),
         plot_as_waiting_time = input$plot_as_waiting_time,
-        line_colors = viridis(end = 0.6, n=2),
-        fill_colors = viridis(end = 0.6, n=2, alpha=0.7)
+        line_colors = c('firebrick', 'steelblue'),
+        fill_colors = alpha(c('firebrick', 'steelblue'), 0.7)
       ) +
         theme_h_ridge
       return(p)
