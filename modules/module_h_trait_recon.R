@@ -22,6 +22,18 @@ h_trait_recon_ui <- function(id) {
           label = "Trait name:",
           placeholder = "The binary trait in your model"
         ),
+        textInput(
+          inputId = ns("states_names1"),
+          label = "State 0:",
+          placeholder = "Character state 0",
+          value = 0
+        ),
+        textInput(
+          inputId = ns("states_names2"),
+          label = "State 1:",
+          placeholder = "Character state 1",
+          value = 1
+        ),
         selectInput(
           inputId = ns("tree_layout"),
           label = "Tree layout:",
@@ -75,10 +87,12 @@ h_trait_recon_ui <- function(id) {
           )
         ),
         actionButton(inputId = ns("plot"), label = "Plot"),
-        tags$hr()
+        actionButton(inputId = ns("code"), label = "Code")
       ),
       column(9,
-             plotOutput(ns("plt"), height = 1000))
+             plotOutput(ns("plt"), height = 1000),
+             tags$hr(),
+             uiOutput(ns("plt_txt"), container = tags$code))
     )
   )))
 }
@@ -105,12 +119,48 @@ h_trait_recon_srv <-
         tree_layout = input$tree_layout,
         tree_direction = input$tree_direction,
         time_axis_ticks = input$time_axis_ticks,
-        open_angle = input$open_angle
+        open_angle = input$open_angle,
+        colors = c("firebrick", "steelblue")
       ) + theme(plot.background = element_rect(color="black", size = 1))
       return(p)
     })
     
     output$plt <- renderPlot({
       plt()
+    })
+    
+    plt_txt <- eventReactive(input$code, {
+      
+      code_text <- paste("<b>Code to reproduce this figure in an R session: </b><br/>",
+                         "<br/>",
+                         "library(hisse)",
+                         "<br/>library(utilhisse) # will load other dependencies",
+                         "<br/>h_proc <- h_process_recon(your_hisse_recon_object)",
+                         
+                         "<br/>h_trait_recon(",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;trait_name = '", input$x_label, "',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = c(", input$states_names1, ",", input$states_names2, "),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;show_tip_labels = ", input$show_tip_labels, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;discrete = ", input$discrete, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;cutoff = ", input$cutoff, ",", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;tree_layout = '", input$tree_layout, "',", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;tree_direction = '", input$tree_direction, "',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;time_axis_ticks = ", input$time_axis_ticks, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;open_angle = ", input$open_angle, ",", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('firebrick', 'steelblue')",
+                         "<br/>)",
+                         "<br/># For more information see ?utilhisse::h_scatterplot", sep="")
+      p <-
+        wellPanel(
+          class = "code_well",
+          tags$style(".code_well {background-color: white ;}"),
+          HTML(code_text)
+        )
+      return(p)
+    })
+    
+    output$plt_txt <- renderUI({
+      plt_txt()
     })
   }
