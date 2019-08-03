@@ -84,7 +84,7 @@ ui <-
                ),
                checkboxInput("h_demo", label = "Use demo file", value = FALSE),
                conditionalPanel(condition = "input.h_demo", 
-                                HTML("This is a model fit for a CID4 model for plankton-benthos trait in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
+                                HTML("This is an ancestral state reconstruction object for a CID4 model for plankton-benthos trait in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
              )),
       column(
         9,
@@ -112,7 +112,7 @@ ui <-
                ),
                checkboxInput("m_demo", label = "Use demo file", value = FALSE),
                conditionalPanel(condition = "input.m_demo", 
-                                HTML("This is a model fit for a MuHiSSE model for marine-freshwater + plankton-benthos interaction in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
+                                HTML("This is an ancestral state reconstruction object for a MuHiSSE model for marine-freshwater + plankton-benthos interaction in diatoms. For more information see our paper: <a href=https://doi.org/10.1101/406165>'Biorxiv'</a>."))
     )),
       column(
         9,
@@ -151,7 +151,7 @@ server <- function(input, output) {
       validate(
         need(
           class(H) == "hisse.states" || class(H[[1]]) == "hisse.states",
-          "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
+          "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'hisse.states')"
         )
       )
       return(H)
@@ -197,7 +197,7 @@ server <- function(input, output) {
       validate(
         need(
           class(H) == "muhisse.states" || class(H[[1]]) == "muhisse.states",
-          "Looks like this is not a MuHiSSE ancestral reconstruction file (makes sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
+          "Looks like this is not a MuHiSSE ancestral reconstruction file (make sure `class(obj)` or if list, `class(obj[[1]])`, returns 'muhisse.states')"
         )
       )
       return(H)
