@@ -10,14 +10,12 @@ library(colorplaner)
 refs_text <- tags$div(
   tags$h3("About"),
   tags$p(
-    "This web application is envisioned as a companion to the",
-    tags$code("HiSSE"),
-    "R package for Hidden Markov Model variants of State Speciation and Extinction models. The goal is to make it easier to quickly visualize the HiSSE results and produce nice looking plots that with some customization can be used for reports or presentations. These functions do not replace HiSSE's plotting functions, rather provide alternative ways of looking at the data. All of the plotting functions used here are available from the package ",
+    "This web application is envisioned as a companion to the R package `hisse` for Hidden Markov Model variants of State Speciation and Extinction models. The goal is to make it easier to quickly visualize HiSSE results and produce nice looking plots that with some customization can be used for reports or presentations. These functions do not replace hisse's plotting functions, rather provide alternative ways of looking at the data. All of the plotting functions used here are available from the package ",
     tags$a(href = "https://github.com/teofiln/utilhisse", 'utilhisse'),
-    " and can be used indepent of this app."
+    " and can be used indepently of this app."
   ),
   tags$p(
-    "The workflow starts with fitting models in R using the HiSSE functions `hisse` or `MuHiSSE` (GeoHiSSE models are not yet supported here) followed by reconstructing marginal ancestral states for traits and rates using the HiSSE functions `MarginRecon` and `MarginReconMuHiSSE`. The ancestral states objects (of class `hisse.states` or `muhisse.states`) can then be saved to an external file with R's `save` function. These saved reconstruction objects are then loaded into this app to visualize the results."
+    "The workflow starts with fitting models in R using the functions `hisse` or `MuHiSSE` (GeoHiSSE models are not yet supported here) followed by reconstructing marginal ancestral states for traits and rates using the HiSSE functions `MarginRecon` and `MarginReconMuHiSSE`. The ancestral states objects (of class `hisse.states` or `muhisse.states`) can then be saved to an external file with R's `save` function. These saved reconstruction objects are then loaded into this app to visualize the results."
   ),
   tags$p(
     "This app was written by ",
