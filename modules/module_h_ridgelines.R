@@ -117,7 +117,7 @@ h_ridgelines_srv <-
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;parameter = '", c(param()),"',",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = c(", input$states_names1, ",", input$states_names2, "),",
-                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time "),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time, "),",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;line_colors = c('firebrick', 'steelblue')", ",",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;fill_colors = c('firebrick', 'steelblue')",
                          "<br/>) + theme_classic()",
