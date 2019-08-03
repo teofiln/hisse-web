@@ -26,9 +26,6 @@ refs_text <- tags$div(
   ),
   
   tags$h3("References"),
-  tags$p(
-    "This web application is based on the following papers and R packages."
-  ),
   tags$h4("Papers:"),
   tags$p(
     "Beaulieu, J. M., & O’Meara, B. C. (2016). Detecting hidden diversification shifts in models of trait-dependent speciation and extinction. Systematic biology, 65(4), 583-601.",

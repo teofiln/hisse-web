@@ -104,7 +104,7 @@ h_dotplot_srv <-
         states_names = c(input$states_names1, input$states_names2),
         plot_as_waiting_time = input$plot_as_waiting_time,
         bin_width = input$bin_width,
-        colors= viridis(end = 0.6, n=2)
+        colors= c('firebrick', 'steelblue')
       ) +
         theme_h_scatter
       return(p)
@@ -131,7 +131,7 @@ h_dotplot_srv <-
         input$plot_as_waiting_time, ",",
         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;bin_width = ",
         input$bin_width, ",", 
-        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors= c(#440154FF, #22A884FF)",
+        "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors= c('firebrick', 'steelblue')",
         "<br/>) + theme_classic()",
         "<br/>",
         "<br/># For more information see ?utilhisse::h_dotplot",
