@@ -97,10 +97,13 @@ m_trait_recon_ui <- function(id) {
             step = 5
           ),
           actionButton(inputId = ns("plot"), label = "Plot"),
-          tags$hr()
+          actionButton(inputId = ns("code"), label = "Code")
         ),
-        column(9,
-               plotOutput(ns("plt"), height = 1000))
+        column(width = 9, 
+               plotOutput(ns("plt"), height = 1000),
+               tags$hr(),
+               uiOutput(ns("plt_txt"), container = tags$code)
+        )
       )
       )))
 }
@@ -135,5 +138,39 @@ m_trait_recon_srv <-
     
     output$plt <- renderPlot({
       plt()
+    })
+    
+    plt_txt <- eventReactive(input$code, {
+      
+      code_text <- paste("<b>Code to reproduce this figure in an R session: </b><br/>",
+                         "<br/>",
+                         "library(hisse)",
+                         "<br/>library(utilhisse) # will load other dependencies",
+                         "<br/>m_proc <- m_process_recon(your_hisse_recon_object)",
+                         "<br/>m_trait_recon(",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = m_proc,",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_of_first_character = c('", input$fc_states1, "','", input$fc_states2, "'),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_of_second_character = c('", input$sc_states1, "','", input$sc_states2, "'),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;cutoff = as.numeric(c('", input$fc_cutoff, "','", input$sc_cutoff, "')),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('#440154FF', '#8FD744FF', '#21908CFF', '#443A83FF', '#FDE725FF', '#31688EFF', '#35B779FF'),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;show_tip_labels = ", input$show_tip_labels, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;tree_layout = '", input$tree_layout, "',", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;tree_direction = '", input$tree_direction, "',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;time_axis_ticks = ", input$time_axis_ticks, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;open_angle = ", input$open_angle,
+                         "<br/>)",
+                         "<br/>",
+                         "<br/># For more information see ?utilhisse::m_trait_recon", sep="")
+      p <-
+        wellPanel(
+          class = "code_well",
+          tags$style(".code_well {background-color: white ;}"),
+          HTML(code_text)
+        )
+      return(p)
+    })
+    
+    output$plt_txt <- renderUI({
+      plt_txt()
     })
   }

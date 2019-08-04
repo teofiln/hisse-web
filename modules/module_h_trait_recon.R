@@ -150,7 +150,7 @@ h_trait_recon_srv <-
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;open_angle = ", input$open_angle, ",", 
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('firebrick', 'steelblue')",
                          "<br/>)",
-                         "<br/># For more information see ?utilhisse::h_scatterplot", sep="")
+                         "<br/># For more information see ?utilhisse::h_trait_recon", sep="")
       p <-
         wellPanel(
           class = "code_well",

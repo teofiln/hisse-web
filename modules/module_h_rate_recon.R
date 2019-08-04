@@ -161,6 +161,7 @@ h_rate_recon_srv <-
     output$plt <- renderPlot({
       plt()
     })
+    
     plt_txt <- eventReactive(input$code, {
       if (!input$discrete) {
         brk <- 1:2
@@ -187,7 +188,7 @@ h_rate_recon_srv <-
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = viridis(n = ", length(brk), ")",
                          "<br/>)",
                          "<br/># Note that `open_angle` and `breaks` are ignored unless `tree_layout = 'fan'` and `discrete=TRUE`, respectively",
-                         "<br/># For more information see ?utilhisse::h_scatterplot", sep="")
+                         "<br/># For more information see ?utilhisse::h_rate_recon", sep="")
       p <-
         wellPanel(
           class = "code_well",

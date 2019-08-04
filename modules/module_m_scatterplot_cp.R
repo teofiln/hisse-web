@@ -61,10 +61,13 @@ m_scatterplot_cp_ui <- function(id) {
             value = FALSE
           ),
           actionButton(inputId = ns("plot"), label = "Plot"),
-          tags$hr()
+          actionButton(inputId = ns("code"), label = "Code")
         ),
-        column(width = 8, 
-               plotOutput(ns("plt")))
+        column(width = 4, 
+               plotOutput(ns("plt")),
+               tags$hr(),
+               uiOutput(ns("plt_txt"), container = tags$code)
+        )
       )
       )))
 }
@@ -108,5 +111,35 @@ m_scatterplot_cp_srv <-
     
     output$plt <- renderPlot({
       plt()
+    })
+    
+    plt_txt <- eventReactive(input$code, {
+      
+      code_text <- paste("<b>Code to reproduce this figure in an R session: </b><br/>",
+                         "<br/>",
+                         "library(hisse)",
+                         "<br/>library(utilhisse) # will load other dependencies",
+                         "<br/>m_proc <- m_process_recon(your_hisse_recon_object)",
+                         "<br/>m_scatterplot_cp(",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = m_proc,",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;focal_character = '", input$focal_char,"',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;focal_character_label = '", input$fc_label, "',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;second_character_label = '", input$sc_label, "',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('#21908CFF', '#440154FF', '#FDE725FF'),", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time,
+                         "<br/>) + theme_classic()",
+                         "<br/>",
+                         "<br/># For more information see ?utilhisse::m_scatterplot_cp", sep="")
+      p <-
+        wellPanel(
+          class = "code_well",
+          tags$style(".code_well {background-color: white ;}"),
+          HTML(code_text)
+        )
+      return(p)
+    })
+    
+    output$plt_txt <- renderUI({
+      plt_txt()
     })
   }

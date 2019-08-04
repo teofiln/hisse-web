@@ -74,10 +74,13 @@ m_dotplot_ui <- function(id) {
             value = FALSE
           ),
           actionButton(inputId = ns("plot"), label = "Plot"),
-          tags$hr()
+          actionButton(inputId = ns("code"), label = "Code")
         ),
         column(width = 9, 
-               plotOutput(ns("plt")))
+               plotOutput(ns("plt")),
+               tags$hr(),
+               uiOutput(ns("plt_txt"), container = tags$code)
+        )
       )
       )))
 }
@@ -121,4 +124,36 @@ m_dotplot_srv <-
     output$plt <- renderPlot({
       plt()
     })
+    
+    plt_txt <- eventReactive(input$code, {
+      
+      code_text <- paste("<b>Code to reproduce this figure in an R session: </b><br/>",
+                         "<br/>",
+                         "library(hisse)",
+                         "<br/>library(utilhisse) # will load other dependencies",
+                         "<br/>h_proc <- h_process_recon(your_hisse_recon_object)",
+                         "<br/>h_dotplot(",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;parameter = '", c(param()),"',",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = 
+                         c('", input$states_names1, "','", input$states_names2, "','", input$states_names3, "','", input$states_names4, "'),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;bin_width = ", input$bin_width, ",",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('#440154FF', '#414487FF', '#2A788EFF', '#22A884FF'),", 
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time,
+                         "<br/>) + theme_classic()",
+                         "<br/>",
+                         "<br/># For more information see ?utilhisse::m_dotplot", sep="")
+      p <-
+        wellPanel(
+          class = "code_well",
+          tags$style(".code_well {background-color: white ;}"),
+          HTML(code_text)
+        )
+      return(p)
+    })
+    
+    output$plt_txt <- renderUI({
+      plt_txt()
+    })
+    
   }

@@ -124,17 +124,17 @@ m_scatterplot_srv <-
                          "<br/>",
                          "library(hisse)",
                          "<br/>library(utilhisse) # will load other dependencies",
-                         "<br/>h_proc <- h_process_recon(your_hisse_recon_object)",
-                         "<br/>h_scatterplot(",
-                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = h_proc,",
+                         "<br/>m_proc <- m_process_recon(your_hisse_recon_object)",
+                         "<br/>m_scatterplot(",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = m_proc,",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;parameter = '", c(param()),"',",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;states_names = 
-                         c(", input$states_names1, ",", input$states_names2, ",", input$states_names3, ",", input$states_names4, "),",
+                         c('", input$states_names1, "','", input$states_names2, "','", input$states_names3, "','", input$states_names4, "),",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;colors = c('#440154FF', '#414487FF', '#2A788EFF', '#22A884FF'),", 
-                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time,"),",
+                         "<br/>&nbsp;&nbsp;&nbsp;&nbsp;plot_as_waiting_time = ", input$plot_as_waiting_time,
                          "<br/>) + theme_classic()",
                          "<br/>",
-                         "<br/># For more information see ?utilhisse::h_scatterplot", sep="")
+                         "<br/># For more information see ?utilhisse::m_scatterplot", sep="")
       p <-
         wellPanel(
           class = "code_well",
