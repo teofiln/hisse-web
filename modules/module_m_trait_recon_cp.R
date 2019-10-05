@@ -70,7 +70,8 @@ m_trait_recon_cp_ui <- function(id) {
             step = 5
           ),
           actionButton(inputId = ns("plot"), label = "Plot"),
-          actionButton(inputId = ns("code"), label = "Code")
+          radioGroupButtons(inputId = ns("code"), label = "Code", choices = c("Yes", "No"))
+          
         ),
         column(width = 9, 
                plotOutput(ns("plt"), height = 1000),
@@ -113,12 +114,13 @@ m_trait_recon_cp_srv <-
       plt()
     })
     
-    plt_txt <- eventReactive(input$code, {
+    
+    plt_txt <- observeEvent(input$code == "Yes", {
       
       code_text <- paste("<b>Code to reproduce this figure in an R session: </b><br/>",
                          "<br/>",
                          "library(hisse)",
-                         "<br/>library(utilhisse) # will load other dependencies",
+                          "<br/>library(utilhisse) # will load other dependencies",
                          "<br/>m_proc <- m_process_recon(your_hisse_recon_object)",
                          "<br/>m_trait_recon_cp(",
                          "<br/>&nbsp;&nbsp;&nbsp;&nbsp;processed_recon = m_proc,",
@@ -134,6 +136,7 @@ m_trait_recon_cp_srv <-
                          "<br/>)",
                          "<br/>",
                          "<br/># For more information see ?utilhisse::m_trait_recon_cp", sep="")
+    
       p <-
         wellPanel(
           class = "code_well",
